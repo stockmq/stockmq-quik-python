@@ -218,29 +218,29 @@ class Quik(RPCClient):
                 tx = self.update_transaction(tx)
                 print(tx)
 
-    def create_order_tx(self, client: str, board: str, ticker: str, tif: TimeInForce, side: Side, price: float, quantity: int) -> Transaction:
-        return Transaction(**self.call("stockmq_create_order", client, board, ticker, tif.value, side.value, price, quantity))
+    def create_order_tx(self, account: str, client: str, board: str, ticker: str, tif: TimeInForce, side: Side, price: float, quantity: int) -> Transaction:
+        return Transaction(**self.call("stockmq_create_order", account, client, board, ticker, tif.value, side.value, price, quantity))
 
-    def create_stop_order_tx(self, client: str, board: str, ticker: str, tif: TimeInForce, side: Side, price: float, stop_price: float, quantity: int) -> Transaction:
-        return Transaction(**self.call("stockmq_create_simple_stop_order", client, board, ticker, tif.value, side.value, price, stop_price, quantity))
+    def create_stop_order_tx(self, account: str, client: str, board: str, ticker: str, tif: TimeInForce, side: Side, price: float, stop_price: float, quantity: int) -> Transaction:
+        return Transaction(**self.call("stockmq_create_simple_stop_order", account, client, board, ticker, tif.value, side.value, price, stop_price, quantity))
 
-    def cancel_order_tx(self, client: str, board: str, ticker: str, order_id: int) -> Transaction:
-        return Transaction(**self.call("stockmq_cancel_order", client, board, ticker, order_id))
+    def cancel_order_tx(self, account: str, client: str, board: str, ticker: str, order_id: int) -> Transaction:
+        return Transaction(**self.call("stockmq_cancel_order", account, client, board, ticker, order_id))
 
-    def cancel_stop_order_tx(self, client: str, board: str, ticker: str, order_id: int) -> Transaction:
-        return Transaction(**self.call("stockmq_cancel_stop_order", client, board, ticker, order_id))
+    def cancel_stop_order_tx(self, account: str, client: str, board: str, ticker: str, order_id: int) -> Transaction:
+        return Transaction(**self.call("stockmq_cancel_stop_order", account, client, board, ticker, order_id))
 
     def update_transaction(self, tx: Transaction) -> Transaction:
         return Transaction(**self.call("stockmq_update_tx", tx.dict()))
 
-    async def create_order(self, client: str, board: str, ticker: str, tif: TimeInForce, side: Side, price: float, quantity: int, timeout: float = 1.0) -> Transaction:
-        return await self.wait_tx(self.create_order_tx(client, board, ticker, tif, side, price, quantity), timeout)
+    async def create_order(self, account: str, client: str, board: str, ticker: str, tif: TimeInForce, side: Side, price: float, quantity: int, timeout: float = 1.0) -> Transaction:
+        return await self.wait_tx(self.create_order_tx(account, client, board, ticker, tif, side, price, quantity), timeout)
 
-    async def create_stop_order(self, client: str, board: str, ticker: str, tif: TimeInForce, side: Side, price: float, stop_price: float, quantity: int, timeout: float = 1.0) -> Transaction:
-        return await self.wait_tx(self.create_stop_order_tx(client, board, ticker, tif, side, price, stop_price, quantity), timeout)
+    async def create_stop_order(self, account: str, client: str, board: str, ticker: str, tif: TimeInForce, side: Side, price: float, stop_price: float, quantity: int, timeout: float = 1.0) -> Transaction:
+        return await self.wait_tx(self.create_stop_order_tx(account, client, board, ticker, tif, side, price, stop_price, quantity), timeout)
 
-    async def cancel_order(self, client: str, board: str, ticker: str, order_id: int, timeout: float = 1.0) -> Transaction:
-        return await self.wait_tx(self.cancel_order_tx(client, board, ticker, order_id), timeout)
+    async def cancel_order(self, account: str, client: str, board: str, ticker: str, order_id: int, timeout: float = 1.0) -> Transaction:
+        return await self.wait_tx(self.cancel_order_tx(account, client, board, ticker, order_id), timeout)
 
-    async def cancel_stop_order(self, client: str, board: str, ticker: str, order_id: int, timeout: float = 1.0) -> Transaction:
-        return await self.wait_tx(self.cancel_stop_order_tx(client, board, ticker, order_id), timeout)
+    async def cancel_stop_order(self, account: str, client: str, board: str, ticker: str, order_id: int, timeout: float = 1.0) -> Transaction:
+        return await self.wait_tx(self.cancel_stop_order_tx(account, client, board, ticker, order_id), timeout)
