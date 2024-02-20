@@ -1,4 +1,4 @@
-from stockmq.data import DataSource
+from stockmq.ns.data import DataSource
 from stockmq.rpc import RPCClient
 from stockmq.schema import Timeframe
 

@@ -2,12 +2,13 @@ import time
 import asyncio
 
 from enum import Enum
-from datetime import datetime
 from pydantic import BaseModel
 from typing import Any
-from typing_extensions import Self
 
+from stockmq.ns.info import QuikInfo
+from stockmq.ns.lua import QuikLua
 from stockmq.rpc import RPCClient
+from stockmq.ns.table import QuikTable
 
 
 class TxTimeoutError(Exception):
@@ -62,166 +63,10 @@ class Order(BaseModel):
     board: str
 
 
-class QuikTable:
-    def __init__(self, rpc: RPCClient, name: str):
-        self.rpc = rpc
-        self.name = name
-
-    def __len__(self):
-        return int(self.rpc.call("getNumberOf", self.name))
-
-    def __getitem__(self, index):
-        r = self.rpc.call("stockmq_get_item", self.name, index)
-        if r is None:
-            raise IndexError
-        return r
 
 
-class QuikLua:
-    def __init__(self, rpc: RPCClient):
-        self.rpc = rpc
-
-    def __getattr__(self, item: Any) -> Any:
-        def wrapper(*args, **kwargs) -> Any:
-            return self.rpc.call(item, *args)
-        return wrapper
 
 
-class QuikInfo:
-    def __init__(self, rpc: RPCClient):
-        self.rpc = rpc
-
-    @property
-    def VERSION(self) -> Any:
-        return self.rpc.call("getInfoParam", "VERSION")
-
-    @property
-    def TRADEDATE(self) -> Any:
-        return self.rpc.call("getInfoParam", "TRADEDATE")
-
-    @property
-    def SERVERTIME(self) -> Any:
-        return self.rpc.call("getInfoParam", "SERVERTIME")
-
-    @property
-    def LASTRECORDTIME(self) -> Any:
-        return self.rpc.call("getInfoParam", "LASTRECORDTIME")
-
-    @property
-    def NUMRECORDS(self) -> Any:
-        return self.rpc.call("getInfoParam", "NUMRECORDS")
-
-    @property
-    def LASTRECORD(self) -> Any:
-        return self.rpc.call("getInfoParam", "LASTRECORD")
-
-    @property
-    def LATERECORD(self) -> Any:
-        return self.rpc.call("getInfoParam", "LATERECORD")
-
-    @property
-    def CONNECTION(self) -> Any:
-        return self.rpc.call("getInfoParam", "CONNECTION")
-
-    @property
-    def IPADDRESS(self) -> Any:
-        return self.rpc.call("getInfoParam", "IPADDRESS")
-
-    @property
-    def IPPORT(self) -> Any:
-        return self.rpc.call("getInfoParam", "IPPORT")
-
-    @property
-    def IPCOMMENT(self) -> Any:
-        return self.rpc.call("getInfoParam", "IPCOMMENT")
-
-    @property
-    def SERVER(self) -> Any:
-        return self.rpc.call("getInfoParam", "SERVER")
-
-    @property
-    def SESSIONID(self) -> Any:
-        return self.rpc.call("getInfoParam", "SESSIONID")
-
-    @property
-    def USER(self) -> Any:
-        return self.rpc.call("getInfoParam", "USER")
-
-    @property
-    def USERID(self) -> Any:
-        return self.rpc.call("getInfoParam", "USERID")
-
-    @property
-    def ORG(self) -> Any:
-        return self.rpc.call("getInfoParam", "ORG")
-
-    @property
-    def LOCALTIME(self) -> Any:
-        return self.rpc.call("getInfoParam", "LOCALTIME")
-
-    @property
-    def CONNECTIONTIME(self) -> Any:
-        return self.rpc.call("getInfoParam", "CONNECTIONTIME")
-
-    @property
-    def MESSAGESSENT(self) -> Any:
-        return self.rpc.call("getInfoParam", "MESSAGESSENT")
-
-    @property
-    def ALLSENT(self) -> Any:
-        return self.rpc.call("getInfoParam", "ALLSENT")
-
-    @property
-    def BYTESSENT(self) -> Any:
-        return self.rpc.call("getInfoParam", "BYTESSENT")
-
-    @property
-    def BYTESPERSECSENT(self) -> Any:
-        return self.rpc.call("getInfoParam", "BYTESPERSECSENT")
-
-    @property
-    def MESSAGESRECV(self) -> Any:
-        return self.rpc.call("getInfoParam", "MESSAGESRECV")
-
-    @property
-    def BYTESRECV(self) -> Any:
-        return self.rpc.call("getInfoParam", "BYTESRECV")
-
-    @property
-    def ALLRECV(self) -> Any:
-        return self.rpc.call("getInfoParam", "ALLRECV")
-
-    @property
-    def BYTESPERSECRECV(self) -> Any:
-        return self.rpc.call("getInfoParam", "BYTESPERSECRECV")
-
-    @property
-    def AVGSENT(self) -> Any:
-        return self.rpc.call("getInfoParam", "AVGSENT")
-
-    @property
-    def AVGRECV(self) -> Any:
-        return self.rpc.call("getInfoParam", "AVGRECV")
-
-    @property
-    def LASTPINGTIME(self) -> Any:
-        return self.rpc.call("getInfoParam", "LASTPINGTIME")
-
-    @property
-    def LASTPINGDURATION(self) -> Any:
-        return self.rpc.call("getInfoParam", "LASTPINGDURATION")
-
-    @property
-    def AVGPINGDURATION(self) -> Any:
-        return self.rpc.call("getInfoParam", "AVGPINGDURATION")
-
-    @property
-    def MAXPINGTIME(self) -> Any:
-        return self.rpc.call("getInfoParam", "MAXPINGTIME")
-
-    @property
-    def MAXPINGDURATION(self) -> Any:
-        return self.rpc.call("getInfoParam", "MAXPINGDURATION")
     
 
 class Quik(RPCClient):
@@ -245,7 +90,7 @@ class Quik(RPCClient):
 
     @property
     def is_connected(self) -> bool:
-        return self.call("isConnected")
+        return self.call("isConnected") > 0
 
     def message(self, message, icon_type=1) -> None:
         self.call("message", message, icon_type)

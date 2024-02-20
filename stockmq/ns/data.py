@@ -10,19 +10,6 @@ from typing import Any, NamedTuple
 from stockmq.schema import Timeframe
 
 
-class Param:
-    def __init__(self, rpc: RPCClient, board: str, ticker: str):
-        self.rpc = rpc
-        self.board = board
-        self.ticker = ticker
-
-    def __getitem__(self, index):
-        if r := self.rpc.call("getParamEx2", self.board, self.ticker, index):
-            return r
-        else:
-            raise IndexError
-
-
 class DataSource:
     def __init__(self, rpc: RPCClient, name: str, board: str, ticker: str, timeframe: Timeframe, stream: bool = False):
         self.rpc = rpc
@@ -48,11 +35,11 @@ class DataSource:
     def close(self) -> None:
         self.rpc.call("stockmq_ds_delete", self.key)
 
-    def df(self) -> pd.DataFrame:
+    def df(self, tz: str = 'Europe/Moscow') -> pd.DataFrame:
         columns = ['T', 'O', 'H', 'L', 'C', 'V']
         if len(self):
             df = pd.DataFrame.from_records(self).reindex(columns=columns).set_index('T')
-            df.index = pd.to_datetime(df.index, unit='s', utc=True).tz_convert('Europe/Moscow')
+            df.index = pd.to_datetime(df.index, unit='s', utc=True).tz_convert(tz)
             return df
         else:
             return pd.DataFrame(columns=columns).set_index('T')

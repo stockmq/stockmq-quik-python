@@ -4,7 +4,7 @@ setup(
     name='stockmq',
     version='0.0.1',
     packages=['stockmq'],
-    url='https://github.com/stockmq/stockmq-quik',
+    url='https://github.com/stockmq/stockmq-quik-python',
     license='GPLv3+',
     author='Alexander Nusov',
     author_email='nusov.go@gmail.com',

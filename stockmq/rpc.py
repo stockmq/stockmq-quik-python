@@ -45,3 +45,4 @@ class RPCClient:
 
     def close(self):
         self.zmq_skt.close()
+        self.zmq_ctx.term()

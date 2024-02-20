@@ -1,4 +1,4 @@
-from stockmq.data import DataSource, Timeframe, Param
+from stockmq.ns.data import DataSource, Timeframe, Param
 from stockmq.rpc import RPCClient
 
 import zmq
