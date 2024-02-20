@@ -16,11 +16,11 @@ def call(thread_id, uri, n):
 
 
 @click.command()
-@click.option("-u", default="tcp://127.0.0.1:8004", help="Host.")
+@click.option("-u", default="tcp://127.0.0.1:8004", help="StockMQ URI.")
 @click.option("-t", default=8, help="Number of threads.")
 @click.option("-c", default=125000, help="Number of calls per thread.")
 def main(u, t, c):
-    """Simple program that benchmarks StockMQ RPC by calling stockmq_test"""
+    """Simple program that benchmarks StockMQ RPC by calling stockmq_test()"""
     t0 = time.time()
     threads = []
     calls = 0
@@ -35,6 +35,7 @@ def main(u, t, c):
         t.join()
 
     t1 = time.time() - t0
+    print(f"Calls: {calls}, Time: {t1}")
     print(f"RPS: {calls/t1}")
 
 
