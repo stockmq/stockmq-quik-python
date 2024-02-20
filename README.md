@@ -13,8 +13,6 @@ import time
 from stockmq.api import Quik
 from stockmq.ns.tx import TimeInForce, Side
 
-api = Quik("tcp://10.211.55.3:8004")
-
 account = "ACCOUNT"
 client = "CLIENT"
 board = "TQBR"
