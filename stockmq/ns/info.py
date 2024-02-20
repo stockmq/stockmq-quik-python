@@ -8,133 +8,133 @@ class QuikInfo:
         self.rpc = rpc
 
     @property
-    def VERSION(self) -> Any:
+    def version(self) -> Any:
         return self.rpc.call("getInfoParam", "VERSION")
 
     @property
-    def TRADEDATE(self) -> Any:
+    def tradedate(self) -> Any:
         return self.rpc.call("getInfoParam", "TRADEDATE")
 
     @property
-    def SERVERTIME(self) -> Any:
+    def servertime(self) -> Any:
         return self.rpc.call("getInfoParam", "SERVERTIME")
 
     @property
-    def LASTRECORDTIME(self) -> Any:
+    def lastrecordtime(self) -> Any:
         return self.rpc.call("getInfoParam", "LASTRECORDTIME")
 
     @property
-    def NUMRECORDS(self) -> Any:
+    def numrecords(self) -> Any:
         return self.rpc.call("getInfoParam", "NUMRECORDS")
 
     @property
-    def LASTRECORD(self) -> Any:
+    def lastrecord(self) -> Any:
         return self.rpc.call("getInfoParam", "LASTRECORD")
 
     @property
-    def LATERECORD(self) -> Any:
+    def laterecord(self) -> Any:
         return self.rpc.call("getInfoParam", "LATERECORD")
 
     @property
-    def CONNECTION(self) -> Any:
+    def connection(self) -> Any:
         return self.rpc.call("getInfoParam", "CONNECTION")
 
     @property
-    def IPADDRESS(self) -> Any:
+    def ipaddress(self) -> Any:
         return self.rpc.call("getInfoParam", "IPADDRESS")
 
     @property
-    def IPPORT(self) -> Any:
+    def ipport(self) -> Any:
         return self.rpc.call("getInfoParam", "IPPORT")
 
     @property
-    def IPCOMMENT(self) -> Any:
+    def ipcomment(self) -> Any:
         return self.rpc.call("getInfoParam", "IPCOMMENT")
 
     @property
-    def SERVER(self) -> Any:
+    def server(self) -> Any:
         return self.rpc.call("getInfoParam", "SERVER")
 
     @property
-    def SESSIONID(self) -> Any:
+    def sessionid(self) -> Any:
         return self.rpc.call("getInfoParam", "SESSIONID")
 
     @property
-    def USER(self) -> Any:
+    def user(self) -> Any:
         return self.rpc.call("getInfoParam", "USER")
 
     @property
-    def USERID(self) -> Any:
+    def userid(self) -> Any:
         return self.rpc.call("getInfoParam", "USERID")
 
     @property
-    def ORG(self) -> Any:
+    def org(self) -> Any:
         return self.rpc.call("getInfoParam", "ORG")
 
     @property
-    def LOCALTIME(self) -> Any:
+    def localtime(self) -> Any:
         return self.rpc.call("getInfoParam", "LOCALTIME")
 
     @property
-    def CONNECTIONTIME(self) -> Any:
+    def connectiontime(self) -> Any:
         return self.rpc.call("getInfoParam", "CONNECTIONTIME")
 
     @property
-    def MESSAGESSENT(self) -> Any:
+    def messagessent(self) -> Any:
         return self.rpc.call("getInfoParam", "MESSAGESSENT")
 
     @property
-    def ALLSENT(self) -> Any:
+    def allsent(self) -> Any:
         return self.rpc.call("getInfoParam", "ALLSENT")
 
     @property
-    def BYTESSENT(self) -> Any:
+    def bytessent(self) -> Any:
         return self.rpc.call("getInfoParam", "BYTESSENT")
 
     @property
-    def BYTESPERSECSENT(self) -> Any:
+    def bytespersecsent(self) -> Any:
         return self.rpc.call("getInfoParam", "BYTESPERSECSENT")
 
     @property
-    def MESSAGESRECV(self) -> Any:
+    def messagesrecv(self) -> Any:
         return self.rpc.call("getInfoParam", "MESSAGESRECV")
 
     @property
-    def BYTESRECV(self) -> Any:
+    def bytesrecv(self) -> Any:
         return self.rpc.call("getInfoParam", "BYTESRECV")
 
     @property
-    def ALLRECV(self) -> Any:
+    def allrecv(self) -> Any:
         return self.rpc.call("getInfoParam", "ALLRECV")
 
     @property
-    def BYTESPERSECRECV(self) -> Any:
+    def bytespersecrecv(self) -> Any:
         return self.rpc.call("getInfoParam", "BYTESPERSECRECV")
 
     @property
-    def AVGSENT(self) -> Any:
+    def avgsent(self) -> Any:
         return self.rpc.call("getInfoParam", "AVGSENT")
 
     @property
-    def AVGRECV(self) -> Any:
+    def avgrecv(self) -> Any:
         return self.rpc.call("getInfoParam", "AVGRECV")
 
     @property
-    def LASTPINGTIME(self) -> Any:
+    def lastpingtime(self) -> Any:
         return self.rpc.call("getInfoParam", "LASTPINGTIME")
 
     @property
-    def LASTPINGDURATION(self) -> Any:
+    def lastpingduration(self) -> Any:
         return self.rpc.call("getInfoParam", "LASTPINGDURATION")
 
     @property
-    def AVGPINGDURATION(self) -> Any:
+    def avgpingduration(self) -> Any:
         return self.rpc.call("getInfoParam", "AVGPINGDURATION")
 
     @property
-    def MAXPINGTIME(self) -> Any:
+    def maxpingtime(self) -> Any:
         return self.rpc.call("getInfoParam", "MAXPINGTIME")
 
     @property
-    def MAXPINGDURATION(self) -> Any:
+    def maxpingduration(self) -> Any:
         return self.rpc.call("getInfoParam", "MAXPINGDURATION")
