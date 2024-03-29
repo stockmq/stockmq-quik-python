@@ -3,16 +3,16 @@ import asyncio
 import time
 
 from stockmq.api import Quik
-from stockmq.ns.tx import TimeInForce, Side
+from stockmq.tx import TimeInForce, Side
 
-account = "ACCOUNT"
-client = "CLIENT"
-board = "TQBR"
-ticker = "SBER"
+account = ""
+client = ""
+board = ""
+ticker = ""
 
 async def main():
     with Quik("tcp://10.211.55.3:8004") as api:
-        print(f"Quik version: {api.info.VERSION}")
+        print(f"Quik version: {api.info.version}")
         print(f"Is Connected: {api.is_connected}")
 
         # Create transaction to BUY and wait for completion

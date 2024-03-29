@@ -1,23 +1,42 @@
 import time
+import enum
 
 from stockmq.rpc import RPCClient
-from collections import OrderedDict
-from datetime import datetime
 import pandas as pd
 
-from typing import Any, NamedTuple
+from typing import Any
 
-from stockmq.schema import Timeframe
+
+class Timeframe(str, enum.Enum):
+    TICK = "TICK"
+    M1 = "M1"
+    M2 = "M2"
+    M3 = "M3"
+    M4 = "M4"
+    M5 = "M5"
+    M6 = "M6"
+    M10 = "M10"
+    M15 = "M15"
+    M20 = "M20"
+    M30 = "M30"
+    H1 = "H1"
+    H2 = "H2"
+    H4 = "H4"
+    D1 = "D1"
+    W1 = "W1"
+    MN1 = "MN1"
 
 
 class DataSource:
-    def __init__(self, rpc: RPCClient, name: str, board: str, ticker: str, timeframe: Timeframe, stream: bool = False):
+    def __init__(self, rpc: RPCClient, name: str, board: str, ticker: str, timeframe: Timeframe, stream: bool = False,
+                 timeout: float = 0.05):
         self.rpc = rpc
         self.key = self.rpc.call("stockmq_ds_create", name, board, ticker, timeframe.value, stream)
+        self.timeout = timeout
 
     def __enter__(self):
         while len(self) == 0:
-            time.sleep(0.05)
+            time.sleep(self.timeout)
         return self
 
     def __exit__(self, *args: Any, **kwargs: Any):

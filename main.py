@@ -5,12 +5,12 @@ import zmq
 
 from stockmq.rpc import RPCClient
 from stockmq.api import Quik
-from stockmq.ns.data import DataSource, Timeframe
+from stockmq.data import DataSource, Timeframe
 
 async def main():
     # Print version and connection information
     with Quik("tcp://10.211.55.3:8004") as api:
-        print(f"Quik version: {api.info.VERSION}")
+        print(f"Quik version: {api.info.version}")
         print(f"Is Connected: {api.is_connected}")
 
     # Print OLHCV

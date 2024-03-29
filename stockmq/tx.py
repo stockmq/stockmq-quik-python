@@ -26,6 +26,7 @@ class OrderType(str, Enum):
     LIMIT = 'L'
     MARKET = 'M'
 
+
 class TimeInForce(str, Enum):
     FOK = "FILL_OR_KILL"
     IOC = "KILL_BALANCE"
@@ -52,6 +53,7 @@ class Transaction(BaseModel):
     updated_ts: float
     state: TransactionState
     message: str
+
 
 class Order(BaseModel):
     id: int

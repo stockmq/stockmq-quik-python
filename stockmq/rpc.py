@@ -16,6 +16,7 @@ class RPCClient:
     RPC_OK = 'OK'
 
     def __init__(self, uri: str = 'tcp://127.0.0.1:8004', timeout: int = 100):
+        """Set up the REQ socket and connect"""
         self.timeout = timeout
         self.zmq_ctx = zmq.Context()
         self.zmq_skt = self.zmq_ctx.socket(zmq.REQ)
@@ -24,12 +25,15 @@ class RPCClient:
         self.zmq_skt.connect(uri)
 
     def __enter__(self):
+        """Enter the context"""
         return self
 
     def __exit__(self, *args: Any, **kwargs: Any):
+        """Close the connection when leaving the context"""
         self.close()
 
     def call(self, method: str, *args: Any, timeout: None | int = None) -> Any:
+        """Call RPC method"""
         self.zmq_skt.send(msgpack.packb([method, *args]))
         if self.zmq_skt.poll(timeout or self.timeout) == zmq.POLLIN:
             s1, s2 = self.zmq_skt.recv_multipart()
@@ -44,5 +48,6 @@ class RPCClient:
             raise RPCTimeoutError()
 
     def close(self):
+        """Close the socket and terminate the context"""
         self.zmq_skt.close()
         self.zmq_ctx.term()
