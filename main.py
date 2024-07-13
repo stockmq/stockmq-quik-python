@@ -19,12 +19,6 @@ async def main():
         with DataSource(rpc, "SBER", "TQBR", "SBER", Timeframe.M1) as ds:
             print(ds.df())
 
-        # Receive a data realtime
-        with DataSource(rpc, "SBER", "TQBR", "SBER", Timeframe.M1, stream=True) as ds:
-            with zmq.Context().socket(zmq.SUB).connect("tcp://10.211.55.3:8005") as skt:
-                skt.subscribe(ds.key)
-                while msg := msgpack.unpackb(skt.recv_multipart()[1]):
-                    print(msg)
 
 if __name__ == '__main__':
     asyncio.run(main())

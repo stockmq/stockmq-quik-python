@@ -28,10 +28,10 @@ class Timeframe(str, enum.Enum):
 
 
 class DataSource:
-    def __init__(self, rpc: RPCClient, name: str, board: str, ticker: str, timeframe: Timeframe, stream: bool = False,
+    def __init__(self, rpc: RPCClient, name: str, board: str, ticker: str, timeframe: Timeframe,
                  timeout: float = 0.05):
         self.rpc = rpc
-        self.key = self.rpc.call("stockmq_ds_create", name, board, ticker, timeframe.value, stream)
+        self.key = self.rpc.call("stockmq_ds_create", name, board, ticker, timeframe.value)
         self.timeout = timeout
 
     def __enter__(self):

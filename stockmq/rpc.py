@@ -2,7 +2,7 @@ import zmq
 import msgpack
 
 from typing import Any
-
+from typing import Optional
 
 class RPCRuntimeError(Exception):
     pass
@@ -32,7 +32,7 @@ class RPCClient:
         """Close the connection when leaving the context"""
         self.close()
 
-    def call(self, method: str, *args: Any, timeout: None | int = None) -> Any:
+    def call(self, method: str, *args: Any, timeout: Optional[int] = None) -> Any:
         """Call RPC method"""
         self.zmq_skt.send(msgpack.packb([method, *args]))
         if self.zmq_skt.poll(timeout or self.timeout) == zmq.POLLIN:
