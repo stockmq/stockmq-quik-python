@@ -1,22 +1,12 @@
 from typing import Any
 
 from stockmq.info import QuikInfo
-from stockmq.lua import QuikLua
 from stockmq.tx import QuikTx
 from stockmq.rpc import RPCClient
 from stockmq.table import QuikTable
 
 
-
-
-
-    
-
 class Quik(RPCClient):
-    @property
-    def lua(self) -> QuikLua:
-        return QuikLua(self)
-
     @property
     def info(self) -> QuikInfo:
         return QuikInfo(self)
