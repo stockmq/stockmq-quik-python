@@ -1,9 +1,10 @@
 from typing import Any
 
-from stockmq.info import QuikInfo
+from stockmq.param import QuikInfo
+from stockmq.param import QuikTable
+
 from stockmq.tx import QuikTx
 from stockmq.rpc import RPCClient
-from stockmq.table import QuikTable
 
 
 class Quik(RPCClient):
@@ -133,6 +134,10 @@ class Quik(RPCClient):
 
     def get_security_info(self, class_name, sec_name) -> Any:
         return self.call("getSecurityInfo", class_name, sec_name)
+    
+    def get_param(self, class_name: str, sec_name: str, name: str) -> Any:
+        return self.call("getParamEx2", class_name, sec_name, name)
+    
 
     @property
     def tx(self) -> QuikTx:

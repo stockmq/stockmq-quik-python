@@ -1,5 +1,6 @@
 import time
 import asyncio
+import logging
 
 from enum import Enum
 from pydantic import BaseModel
@@ -65,6 +66,7 @@ class QuikTx:
 
     def __init__(self, rpc: RPCClient):
         self.rpc = rpc
+        self.logger = logging.getLogger(__name__)
 
     async def wait_tx(self, tx: Transaction, timeout=1.0) -> Transaction:
         t0 = time.time()
@@ -74,24 +76,62 @@ class QuikTx:
             elif tx.state == TransactionState.EXECUTED:
                 return tx
             elif tx.state == TransactionState.REJECTED:
-                print(tx)
+                self.logger.debug(f"{__name__}: {tx}")
                 raise TxRejectedError(tx.message)
             elif tx.state == TransactionState.ACCEPTED:
                 await asyncio.sleep(self.TX_SLEEP_TIMEOUT)
                 tx = self.update_transaction(tx)
-                print(tx)
+                self.logger.debug(f"{__name__}: {tx}")
 
     def create_order_tx(self, account: str, client: str, board: str, ticker: str, tif: TimeInForce, side: Side, price: float, quantity: int) -> Transaction:
-        return Transaction(**self.rpc.call("stockmq_create_order", account, client, board, ticker, tif.value, side.value, price, quantity))
+        return Transaction(**self.rpc.call("stockmq_create_tx", {
+            'ACTION': "NEW_ORDER",
+            'ACCOUNT': account,
+            'CLIENT_CODE': client,
+            'CLASSCODE': board,
+            'SECCODE': ticker,
+            'TYPE':"L",
+            'EXECUTION_CONDITION': tif.value,
+            'OPERATION': side.value,
+            'PRICE': price,
+            'QUANTITY': quantity,
+        }))
 
     def create_stop_order_tx(self, account: str, client: str, board: str, ticker: str, tif: TimeInForce, side: Side, price: float, stop_price: float, quantity: int) -> Transaction:
-        return Transaction(**self.rpc.call("stockmq_create_simple_stop_order", account, client, board, ticker, tif.value, side.value, price, stop_price, quantity))
+        return Transaction(**self.rpc.call("stockmq_create_tx", {
+            'ACTION': "NEW_STOP_ORDER",
+            'ACCOUNT': account,
+            'CLIENT_CODE': client,
+            'CLASSCODE': board,
+            'SECCODE': ticker,
+            'TYPE': "L",
+            'STOP_ORDER_KIND': "SIMPLE_STOP_ORDER",
+            'EXECUTION_CONDITION': tif.value,
+            'OPERATION': side.value,
+            'PRICE': price,
+            'STOPPRICE': stop_price,
+            'QUANTITY': quantity,
+        }))
 
     def cancel_order_tx(self, account: str, client: str, board: str, ticker: str, order_id: int) -> Transaction:
-        return Transaction(**self.rpc.call("stockmq_cancel_order", account, client, board, ticker, order_id))
+        return Transaction(**self.rpc.call("stockmq_create_tx", {
+            'ACTION': "KILL_ORDER",
+            'ACCOUNT': account,
+            'CLIENT_CODE': client,
+            'CLASSCODE': board,
+            'SECCODE': ticker,
+            'ORDER_KEY': order_id,
+        }))
 
     def cancel_stop_order_tx(self, account: str, client: str, board: str, ticker: str, order_id: int) -> Transaction:
-        return Transaction(**self.rpc.call("stockmq_cancel_stop_order", account, client, board, ticker, order_id))
+        return Transaction(**self.rpc.call("stockmq_create_tx", {
+            'ACTION': "KILL_STOP_ORDER",
+            'ACCOUNT': account,
+            'CLIENT_CODE': client,
+            'CLASSCODE': board,
+            'SECCODE': ticker,
+            'STOP_ORDER_KEY': order_id,
+        }))
 
     def update_transaction(self, tx: Transaction) -> Transaction:
         return Transaction(**self.rpc.call("stockmq_update_tx", tx.dict()))
