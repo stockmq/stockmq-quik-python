@@ -18,7 +18,7 @@ class QuikTable:
         return r
 
 
-class Param:
+class QuikParam:
     def __init__(self, rpc: RPCClient, board: str, ticker: str):
         self.rpc = rpc
         self.board = board
