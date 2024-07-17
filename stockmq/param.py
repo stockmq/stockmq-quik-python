@@ -18,19 +18,6 @@ class QuikTable:
         return r
 
 
-class QuikParam:
-    def __init__(self, rpc: RPCClient, board: str, ticker: str):
-        self.rpc = rpc
-        self.board = board
-        self.ticker = ticker
-
-    def __getitem__(self, index):
-        if r := self.rpc.call("getParamEx2", self.board, self.ticker, index):
-            return r
-        else:
-            raise IndexError
-
-
 class QuikInfo:
     def __init__(self, rpc: RPCClient):
         self.rpc = rpc

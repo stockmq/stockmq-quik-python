@@ -1,10 +1,10 @@
 import time
 import enum
 
-from stockmq.rpc import RPCClient
 import pandas as pd
 
 from typing import Any
+from stockmq.rpc import RPCClient
 
 
 class Timeframe(str, enum.Enum):
@@ -34,18 +34,18 @@ class DataSource:
         self.key = self.rpc.call("stockmq_ds_create", board, ticker, timeframe.value)
         self.timeout = timeout
 
-    def __enter__(self):
+    def __enter__(self) -> None:
         while len(self) == 0:
             time.sleep(self.timeout)
         return self
 
-    def __exit__(self, *args: Any, **kwargs: Any):
+    def __exit__(self, *args: Any, **kwargs: Any) -> None:
         self.close()
 
-    def __len__(self):
+    def __len__(self) -> int:
         return self.rpc.call("stockmq_ds_size", self.key)
 
-    def __getitem__(self, index):
+    def __getitem__(self, index) -> Any:
         if r := self.rpc.call("stockmq_ds_peek", self.key, index):
             return r
         else:

@@ -3,6 +3,9 @@ from typing import Any
 from stockmq.param import QuikInfo
 from stockmq.param import QuikTable
 
+from stockmq.data import DataSource
+from stockmq.data import Timeframe
+
 from stockmq.tx import QuikTx
 from stockmq.rpc import RPCClient
 
@@ -135,8 +138,11 @@ class Quik(RPCClient):
     def get_security_info(self, class_name, sec_name) -> Any:
         return self.call("getSecurityInfo", class_name, sec_name)
     
-    def get_param(self, class_name: str, sec_name: str, name: str) -> Any:
+    def param(self, class_name: str, sec_name: str, name: str) -> Any:
         return self.call("getParamEx2", class_name, sec_name, name)
+    
+    def datasource(self, board: str, ticker: str, timeframe: Timeframe, timeout: float = 0.05) -> DataSource:
+        return DataSource(self, board, ticker, timeframe, timeout)
     
 
     @property

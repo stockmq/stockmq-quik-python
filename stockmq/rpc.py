@@ -24,11 +24,11 @@ class RPCClient:
         self.zmq_skt.setsockopt(zmq.LINGER, 0)
         self.zmq_skt.connect(uri)
 
-    def __enter__(self):
+    def __enter__(self) -> None:
         """Enter the context"""
         return self
 
-    def __exit__(self, *args: Any, **kwargs: Any):
+    def __exit__(self, *args: Any, **kwargs: Any) -> None:
         """Close the connection when leaving the context"""
         self.close()
 
@@ -47,7 +47,7 @@ class RPCClient:
         else:
             raise RPCTimeoutError()
 
-    def close(self):
+    def close(self) -> None:
         """Close the socket and terminate the context"""
         self.zmq_skt.close()
         self.zmq_ctx.term()

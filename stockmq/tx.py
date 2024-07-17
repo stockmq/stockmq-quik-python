@@ -15,7 +15,6 @@ class TxRejectedError(Exception):
     pass
 
 
-
 class Action(str, Enum):
     NEW_ORDER = "NEW_ORDER"
     NEW_STOP_ORDER = "NEW_STOP_ORDER"
@@ -134,7 +133,7 @@ class QuikTx:
         }))
 
     def update_transaction(self, tx: Transaction) -> Transaction:
-        return Transaction(**self.rpc.call("stockmq_update_tx", tx.dict()))
+        return Transaction(**self.rpc.call("stockmq_update_tx", tx.model_dump()))
 
     async def create_order(self, account: str, client: str, board: str, ticker: str, tif: TimeInForce, side: Side, price: float, quantity: int, timeout: float = 1.0) -> Transaction:
         return await self.wait_tx(self.create_order_tx(account, client, board, ticker, tif, side, price, quantity), timeout)
