@@ -6,6 +6,7 @@ from stockmq.rpc import RPCTimeoutError
 
 
 def main():
+    """StackMQ REPL that allows to connect to the running instance"""
     parser = argparse.ArgumentParser(description='StockMQ REPL')
     parser.add_argument("uri", type=str, help="Connection URI (example: tcp://127.0.0.1:8004)")
     args = parser.parse_args()

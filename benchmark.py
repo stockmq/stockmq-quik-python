@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 import threading
 import time
-import click
-
+import argparse
 from stockmq.rpc import RPCClient
 
 
@@ -15,18 +14,21 @@ def call(thread_id, uri, n):
                 raise Exception("Invalid result")
 
 
-@click.command()
-@click.option("-u", default="tcp://127.0.0.1:8004", help="StockMQ URI.")
-@click.option("-t", default=8, help="Number of threads.")
-@click.option("-c", default=125000, help="Number of calls per thread.")
-def main(u, t, c):
+def main():
     """Simple program that benchmarks StockMQ RPC by calling stockmq_test()"""
+    parser = argparse.ArgumentParser(description='StockMQ Benchmark')
+    parser.add_argument("uri", type=str, help="Connection URI (example: tcp://127.0.0.1:8004)")
+    parser.add_argument("threads", type=int, help="Number of threads", nargs='?', default=8, const=8)
+    parser.add_argument("calls", type=int, help="Number of calls per thread", nargs='?', default=125000, const=125000)
+    args = parser.parse_args()
+
     t0 = time.time()
     threads = []
     calls = 0
-    for i in range(1, t+1):
-        calls += c
-        threads.append(threading.Thread(target=call, args=(i, u, c)))
+
+    for i in range(1, args.threads+1):
+        calls += args.calls
+        threads.append(threading.Thread(target=call, args=(i, args.uri, args.calls)))
 
     for t in threads:
         t.start()

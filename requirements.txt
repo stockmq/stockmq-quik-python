@@ -8,4 +8,3 @@ pytz==2024.1
 pyzmq==25.1.2
 six==1.16.0
 tzdata==2024.1
-click~=8.1.7
