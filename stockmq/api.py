@@ -284,7 +284,7 @@ class Quik(RPCClient):
     def send_transaction(self, transaction: Mapping[str, Any]) -> Any:
         return self.call("sendTransaction", transaction)
     
-    def datasource(self, board: str, ticker: str, timeframe: Timeframe, timeout: float = 0.05) -> DataSource:
+    def ds(self, board: str, ticker: str, timeframe: Timeframe, timeout: float = 0.05) -> DataSource:
         return DataSource(self, board, ticker, timeframe, timeout)
     
 
