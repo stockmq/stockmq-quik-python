@@ -11,7 +11,8 @@ import asyncio
 import time
 
 from stockmq.api import Quik
-from stockmq.tx import TimeInForce, Side
+from stockmq.tx import TimeInForce
+from stockmq.tx import Side
 
 uri = "tcp://127.0.0.1:8004"
 account = "ACCOUNT"
