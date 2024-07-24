@@ -63,7 +63,7 @@ class Order(BaseModel):
 class QuikTx:
     TX_SLEEP_TIMEOUT = 0.01
 
-    def __init__(self, rpc: RPCClient):
+    def __init__(self, rpc: RPCClient) -> None:
         self.rpc = rpc
         self.logger = logging.getLogger(__name__)
 

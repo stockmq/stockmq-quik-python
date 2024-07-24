@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+
 from stockmq.rpc import RPCClient
 from stockmq.rpc import RPCRuntimeError
 from stockmq.rpc import RPCTimeoutError

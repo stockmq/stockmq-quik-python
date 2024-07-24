@@ -15,7 +15,7 @@ class RPCTimeoutError(Exception):
 class RPCClient:
     RPC_OK = 'OK'
 
-    def __init__(self, uri: str = 'tcp://127.0.0.1:8004', timeout: int = 100):
+    def __init__(self, uri: str = 'tcp://127.0.0.1:8004', timeout: int = 100) -> None:
         """Set up the REQ socket and connect"""
         self.timeout = timeout
         self.zmq_ctx = zmq.Context()
