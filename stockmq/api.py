@@ -251,6 +251,10 @@ class Quik(RPCClient):
     def is_connected(self) -> bool:
         return self.call("isConnected") > 0
 
+    @property
+    def tx(self) -> QuikTx:
+        return QuikTx(self)
+
     def message(self, message, icon_type=1) -> None:
         self.call("message", message, icon_type)
 
@@ -286,9 +290,3 @@ class Quik(RPCClient):
     
     def ds(self, board: str, ticker: str, timeframe: Timeframe, timeout: float = 0.05) -> DataSource:
         return DataSource(self, board, ticker, timeframe, timeout)
-    
-
-    @property
-    def tx(self) -> QuikTx:
-        """Returns Transaction manager"""
-        return QuikTx(self)
