@@ -3,16 +3,21 @@ import msgpack
 
 from typing import Any
 from typing import Optional
+from typing import Self
+
 
 class RPCRuntimeError(Exception):
+    """Runtime Error (error on server)"""
     pass
 
 
 class RPCTimeoutError(Exception):
+    """Timeout Error"""
     pass
 
 
 class RPCClient:
+    """RPC Client"""
     RPC_OK = 'OK'
 
     def __init__(self, uri: str = 'tcp://127.0.0.1:8004', timeout: int = 100) -> None:
@@ -24,7 +29,7 @@ class RPCClient:
         self.zmq_skt.setsockopt(zmq.LINGER, 0)
         self.zmq_skt.connect(uri)
 
-    def __enter__(self) -> None:
+    def __enter__(self) -> Self:
         """Enter the context"""
         return self
 

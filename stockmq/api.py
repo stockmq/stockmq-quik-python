@@ -154,7 +154,7 @@ class Quik(RPCClient):
     @property
     def maxpingduration(self) -> Any:
         return self.call("getInfoParam", "MAXPINGDURATION")
-    
+
     @property
     def firms(self) -> QuikTable:
         return QuikTable(self, "firms")
@@ -281,12 +281,13 @@ class Quik(RPCClient):
 
     def get_security_info(self, class_name, sec_name) -> Any:
         return self.call("getSecurityInfo", class_name, sec_name)
-    
+
     def param(self, class_name: str, sec_name: str, name: str) -> Any:
         return self.call("getParamEx2", class_name, sec_name, name)
-    
+
     def send_transaction(self, transaction: Mapping[str, Any]) -> Any:
         return self.call("sendTransaction", transaction)
-    
-    def ds(self, board: str, ticker: str, timeframe: Timeframe, timeout: float = 0.05) -> DataSource:
-        return DataSource(self, board, ticker, timeframe, timeout)
+
+    def ds(self, board: str, ticker: str, timeframe: Timeframe, stream: bool = False,
+           timeout: float = 0.05) -> DataSource:
+        return DataSource(self, board, ticker, timeframe, stream, timeout)

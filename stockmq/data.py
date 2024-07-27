@@ -4,7 +4,12 @@ import enum
 import pandas as pd
 
 from typing import Any
+from typing import Self
+
 from stockmq.rpc import RPCClient
+
+import zmq
+import msgpack
 
 
 class Timeframe(str, enum.Enum):
@@ -29,12 +34,13 @@ class Timeframe(str, enum.Enum):
 
 class DataSource:
     def __init__(self, rpc: RPCClient, board: str, ticker: str, timeframe: Timeframe,
+                 stream: bool = False,
                  timeout: float = 0.05) -> None:
         self.rpc = rpc
-        self.key = self.rpc.call("stockmq_ds_create", board, ticker, timeframe.value)
+        self.key = self.rpc.call("stockmq_ds_create", board, ticker, timeframe.value, stream)
         self.timeout = timeout
 
-    def __enter__(self) -> None:
+    def __enter__(self) -> Self:
         while len(self) == 0:
             time.sleep(self.timeout)
         return self
@@ -62,3 +68,9 @@ class DataSource:
             return df
         else:
             return pd.DataFrame(columns=columns).set_index('T')
+
+    def stream(self, uri: str = "tcp://127.0.0.1:8005") -> Any:
+        with zmq.Context().socket(zmq.SUB).connect(uri) as skt:
+            skt.subscribe(self.key)
+            while msg := msgpack.unpackb(skt.recv_multipart()[1]):
+                yield msg
