@@ -2,8 +2,8 @@ from typing import Any
 from typing import Mapping
 
 from stockmq.rpc import RPCClient
-from stockmq.data import DataSource
-from stockmq.data import Timeframe
+from stockmq.ds import DataSource
+from stockmq.ds import Timeframe
 from stockmq.tx import QuikTx
 
 

@@ -89,7 +89,7 @@ class QuikTx:
             'CLIENT_CODE': client,
             'CLASSCODE': board,
             'SECCODE': ticker,
-            'TYPE':"L",
+            'TYPE': "L",
             'EXECUTION_CONDITION': tif.value,
             'OPERATION': side.value,
             'PRICE': price,
